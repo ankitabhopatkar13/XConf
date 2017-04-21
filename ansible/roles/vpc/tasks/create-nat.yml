@@ -1,0 +1,44 @@
+---
+- name: Fetch Public Subnet details
+  ec2_vpc_subnet_facts:
+    region: "{{vpc.region}}"
+    filters:
+      "tag:Type": "public"
+      "vpc-id": "{{vpc_info.vpc.id}}"
+  register: public
+
+- name: Fetch Private Subnet details
+  ec2_vpc_subnet_facts:
+    region: "{{vpc.region}}"
+    filters:
+      "tag:Type": "private"
+      "vpc-id": "{{vpc_info.vpc.id}}"
+  register: private
+
+- name: Create nat gateway
+  ec2_vpc_nat_gateway:
+    subnet_id: "{{ public.subnets[0].id }}"
+    state: present
+    region: "{{ vpc.region }}"
+    eip_address: 54.153.88.144
+  register: nat_gw
+
+- name: Set up private subnet route table
+  ec2_vpc_route_table_facts:
+    filters:
+      association.subnet-id: "{{ private.subnets[0].id }}"
+    region: "{{ vpc.region }}"
+  register: route_id_info_private
+
+- name: Create route table
+  ec2_vpc_route_table:
+    vpc_id: "{{ vpc_info.vpc.id }}"
+    region: "{{ vpc.region }}"
+    route_table_id: route_id_info_private.route_tables[0].id
+    routes:
+      - dest: 0.0.0.0/0
+        gateway_id: "{{ nat_gw.nat_gateway_id }}"
+    subnets:
+      - "{{ private.subnets[0].id }}"
+  register: private_route_table
+  when: route_id_info_private.route_tables|length == 0

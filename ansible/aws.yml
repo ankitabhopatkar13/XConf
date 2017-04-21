@@ -1,4 +1,4 @@
-aws_key_name: instance_key
+aws_key_name: ms_us_west_key
 ami_id: ami-af4333cf
 vpc:
   name: XConf-Demo
