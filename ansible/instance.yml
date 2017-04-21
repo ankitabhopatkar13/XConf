@@ -1,0 +1,4 @@
+- hosts: controller
+  roles:
+    - {role: instance}
+    - {role: dynamic-inventory}

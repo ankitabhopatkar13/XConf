@@ -1,0 +1,6 @@
+---
+- name: Drop mongodb repo file
+  copy: src="mongodb-org-3.2.repo" dest=/etc/yum.repos.d/ owner=root group=root
+
+- name: Install mongodb
+  yum: name=mongodb-org-3.2.3 state=present

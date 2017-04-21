@@ -1,0 +1,17 @@
+---
+- name: Fetch VPC Subnet Facts
+  ec2_vpc_subnet_facts:
+    filters:
+      vpc-id: "{{vpc_id}}"
+    region: "{{ vpc.region }}"
+  register: subnet_facts
+
+- set_fact:
+    public_subnet_id: "{{ item.id }}"
+  with_items: "{{subnet_facts.subnets}}"
+  when: item.tags.Name == "{{ vpc.subnet.public.name }}"
+
+- set_fact:
+    private_subnet_id: "{{ item.id }}"
+  with_items: "{{subnet_facts.subnets}}"
+  when: item.tags.Name == "{{ vpc.subnet.private.name }}"

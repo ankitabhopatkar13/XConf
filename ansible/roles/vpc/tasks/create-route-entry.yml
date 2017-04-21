@@ -1,0 +1,28 @@
+---
+- name: Fetch Public Subnet details
+  ec2_vpc_subnet_facts:
+    region: "{{vpc.region}}"
+    filters:
+      "tag:Type": "public"
+      "vpc-id": "{{vpc_info.vpc.id}}"
+  register: public
+
+- name: Set up public subnet route table
+  ec2_vpc_route_table_facts:
+    filters:
+      association.subnet-id: "{{ public.subnets[0].id }}"
+    region: "{{ vpc.region }}"
+  register: route_id_info
+
+- name: Create route table
+  ec2_vpc_route_table:
+    vpc_id: "{{ vpc_info.vpc.id }}"
+    region: "{{ vpc.region }}"
+    route_table_id: route_id_info.route_tables[0].id
+    routes:
+      - dest: 0.0.0.0/0
+        gateway_id: "{{ igw.gateway_id }}"
+    subnets:
+      - "{{ public.subnets[0].id }}"
+  register: public_route_table
+  when: route_id_info.route_tables|length == 0

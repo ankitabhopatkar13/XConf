@@ -1,0 +1,22 @@
+---
+- name: Install git
+  yum:
+    name: "{{item}}"
+    state: present
+  with_items:
+    - git
+    - epel-release
+
+- name: Install Packages from epel
+  yum:
+    name: npm
+    state: present
+
+- name: Clone the App Code
+  git:
+    repo: https://github.com/scotch-io/node-todo.git
+    dest: /home/centos/node-todo
+
+- name: Install the App
+  npm:
+    path: /home/centos/node-todo

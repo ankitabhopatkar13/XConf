@@ -1,0 +1,5 @@
+---
+- include: create-vpc.yml
+- include: create-subnet.yml
+- include: create-igw.yml
+- include: create-route-entry.yml
