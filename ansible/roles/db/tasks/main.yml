@@ -4,3 +4,6 @@
 
 - name: Install mongodb
   yum: name=mongodb-org-3.2.3 state=present
+
+- name: Start MongoDb service
+  service: name=mongod state=started enabled=yes
