@@ -1,0 +1,28 @@
+aws_key_name: ms_us_west_key
+ami_id: ami-af4333cf
+vpc:
+  name: XConf-Demo-Vpc
+  cidr: 10.30.0.0/16
+  region: us-west-1
+  sg_name: sg_common
+  sg_description: sg_rules_for_allowing_ssh_from_controller
+  subnet:
+    public:
+      name: XConf-Demo-Public-Vpc
+      cidr: 10.30.1.0/24
+      az: us-west-1b
+      type: public
+    private:
+      name: XConf-Demo-Private-Vpc
+      cidr: 10.30.2.0/24
+      az: us-west-1b
+      type: private
+instance:
+  web_server:
+    type: public
+    name: WebServer
+    exact_count: 1
+  db_server:
+    type: private
+    name: DbServer
+    exact_count: 1
