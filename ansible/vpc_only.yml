@@ -4,4 +4,4 @@
     - include_vars:
         file: "{{aws_config | default('aws.yml')}}"
   roles:
-    - {role: destroy-cell}
+    - {role: vpc_only}

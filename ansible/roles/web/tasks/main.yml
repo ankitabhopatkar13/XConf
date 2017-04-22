@@ -20,3 +20,11 @@
 - name: Install the App
   npm:
     path: /home/centos/node-todo
+
+- name: Drop the Mongo Config
+  template:
+    src: database.js
+    dest: /home/centos/node-todo/config/database.js
+
+- name: Start the Server
+  shell: "node /home/centos/node-todo/server.js"

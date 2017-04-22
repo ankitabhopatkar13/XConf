@@ -21,6 +21,7 @@
     state: present
     region: "{{ vpc.region }}"
     eip_address: 54.153.88.144
+    wait: yes
   register: nat_gw
 
 - name: Set up private subnet route table

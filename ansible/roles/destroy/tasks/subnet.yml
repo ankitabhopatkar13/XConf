@@ -1,0 +1,14 @@
+---
+- name: Destroy public subnet
+  ec2_vpc_subnet:
+    state: absent
+    vpc_id: "{{ vpc_id }}"
+    cidr: "{{ vpc.subnet.public.cidr }}"
+    region: "{{ vpc.region }}"
+
+- name: Destroy private subnet
+  ec2_vpc_subnet:
+    state: absent
+    vpc_id: "{{ vpc_id }}"
+    cidr: "{{ vpc.subnet.private.cidr }}"
+    region: "{{ vpc.region }}"

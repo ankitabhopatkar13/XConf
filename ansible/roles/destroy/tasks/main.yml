@@ -1,0 +1,3 @@
+---
+- include: subnet.yml
+- include: vpc.yml

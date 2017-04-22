@@ -12,5 +12,9 @@
         cidr_ip: "{{ controller_ip }}"
       - proto: all
         group_name: "{{ vpc.sg_name }}"
+      - proto: tcp
+        from_port: 27017
+        to_port: 27017
+        group_name: "{{ vpc.sg_name }}"
   register: sg_info
 
